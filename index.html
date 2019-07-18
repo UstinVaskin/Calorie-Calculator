@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Calorie Calculator
+    </title>
+
+    <style type="text/css">
+      fieldset {
+        border: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      label {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Calorie Calculator</h1>
+
+    <form name="calorieCalculator">
+      <label><input type="text" name="firstname" /> First name</label>
+      <label><input type="text" name="lastname" /> Last name</label>
+      <label
+        ><input type="number" name="idealCal" /> Your Ideal Calories by day
+      </label>
+
+      <h3>Calories by day</h3>
+
+      <fieldset name="calsPerDay">
+        <label>
+          <input type="number" name="monday" />
+          Monday
+        </label>
+        <label>
+          <input type="number" name="tuesday" />
+          Tuesday
+        </label>
+        <label>
+          <input type="number" name="wednesday" />
+          Wednesday
+        </label>
+        <label>
+          <input type="number" name="thursday" />
+          Thursday
+        </label>
+        <label>
+          <input type="number" name="friday" />
+          Friday
+        </label>
+        <label>
+          <input type="number" name="saturday" />
+          Saturday
+        </label>
+        <label>
+          <input type="number" name="sunday" />
+          Sunday
+        </label>
+      </fieldset>
+
+      <button id="submit">Submit</button>
+    </form>
+
+    <h2 id="totalCalories"></h2>
+    <h2 id="greeting"></h2>
+    <h2 id="message"></h2>
+
+    <script type="text/javascript">
+      const formElm = document.forms.calorieCalculator;
+      const perDayfields = [...formElm.elements.calsPerDay.elements];
+      const totalCaloriesElm = document.getElementById("totalCalories");
+      const greetingElm = document.getElementById("greeting");
+      const messageElm = document.getElementById("message");
+
+      formElm.addEventListener("submit", event => {
+        event.preventDefault();
+
+        const firstname = formElm.elements.firstname.value;
+        const lastname = formElm.elements.lastname.value;
+
+        greetingElm.textContent = `${firstname} ${lastname}`;
+
+        const total = perDayfields.reduce((sum, { value }) => {
+          sum += +value;
+          return sum;
+        }, 0);
+
+        totalCaloriesElm.textContent = total;
+
+        const idealCalTotal = +formElm.elements.idealCal.value * 7;
+
+        let message = "";
+
+        if (total > idealCalTotal) {
+          message = "Time to head to the gym";
+        } else if (total === idealCalTotal) {
+          message = "Right on the money";
+        } else {
+          message = "Time to eat a bit more";
+        }
+        messageElm.textContent = `${message}!`;
+      });
+    </script>
+  </body>
+</html>
